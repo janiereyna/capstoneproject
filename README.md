@@ -86,7 +86,7 @@ Edwin Soto-Villela - [@edwinsoto88](https://www.linkedin.com/in/edwin-soto-ville
 
 Rohit Kumar Shaw - [@rks0134](https://www.linkedin.com/in/rohitkrshaw/) - Rohit's LinkedIn
 
-Beion Poly - [@beion2000]
+Beion Poly - [@beion2000](https://www.linkedin.com/in/beionpoly/) - Beion's LinkedIn
 
 Janie Reyna - [@janiereyna](https://www.linkedin.com/in/jreyna-csengineer/) - Janie's LinkedIn
 
