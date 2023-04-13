@@ -11,20 +11,26 @@ export const  Login = () => {
 
     }
     return (
-        <div className="auth-form-container">
-            <form className="login-form" onSumbit={handleSubmit}>
-                <h1> Login </h1>
-                <label htmlFor="email">email</label>
-                <input type="email" placeholder="youremail@gmail.com" id="email" name="email"/>
-
-                <label htmlFor="password">password</label>
-                <input type="password" placeholder="********" id="password" name="password"/>
-
-                <button type="submit">Log In</button>
-            </form>
-            <CustomLink to ="/registration"><button className="link-button"> Don't have an account? Register here </button></CustomLink>
-        </div>
-    )
+      <div class="wrapper">
+        <h2>Login</h2>
+        <form action="#">
+          <div class="input-box">
+            <input type="text" placeholder="Email" required />
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Password" required />
+          </div>
+          <div class="input-box button">
+            <input type="Submit" value="Log in" />
+          </div>
+          <div class="text">
+            <h3>
+              Don't have an account? <a href="/registration">Register here</a>
+            </h3>
+          </div>
+        </form>
+      </div>
+    );
 }
 
 function CustomLink({to, children, ...props}){

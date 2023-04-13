@@ -17,30 +17,39 @@ export const  Registration = () => {
     }
 
     return (
-        <div className= "auth-form-container">
-            <form className ="registration-form" onSumbit={handleSubmit}>
-                <h1> Register </h1>
-                <label htmlFor="name">First Name</label>
-                <input value={name} id="name" placeholder="First Name" />
-
-                <label htmlFor="lastname">Last Name</label>
-                <input value={lastname} id="lastname" placeholder="Last Name" />
-                
-                <label htmlFor="number">Phone Number</label>
-                <input value={number} id="number" placeholder="123-456-7890" />
-
-                <label htmlFor="email">email</label>
-                <input type="email" placeholder="youremail@gmail.com" id="email" name="email"/>
-
-                <label htmlFor="password">password</label>
-                <input type="password" placeholder="********" id="password" name="password"/>
-
-                <button type="submit">Register</button>
-
-            </form>
-            <CustomLink to ="/login"><button className="link-button"> Already have an account? Login here </button></CustomLink>
-        </div>
-    )
+      <div class="wrapper">
+        <h2>Registration</h2>
+        <form action="#">
+          <div class="input-box">
+            <input type="text" placeholder="First Name" required />
+          </div>
+          <div class="input-box">
+            <input type="text" placeholder="Last Name" required />
+          </div>
+          <div class="input-box">
+            <input type="text" placeholder="Email" required />
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Create password" required />
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Confirm password" required />
+          </div>
+          <div class="policy">
+            <input type="checkbox" />
+            <h3>I accept all terms & condition</h3>
+          </div>
+          <div class="input-box button">
+            <input type="Submit" value="Register Now" />
+          </div>
+          <div class="text">
+            <h3>
+              Already have an account? <a href="/login">Login now</a>
+            </h3>
+          </div>
+        </form>
+      </div>
+    );
 }
 function CustomLink({to, children, ...props}){
     const resolvedPath = useResolvedPath(to)  
