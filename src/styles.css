@@ -109,13 +109,16 @@ button {
 }
 
 .wrapper{
-  position: relative;
-  max-width: 430px;
-  width: 100%;
-  background: #fff;
-  padding: 34px;
-  border-radius: 6px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+max-width: 430px;
+width: 100%;
+background: #fff;
+padding: 34px;
+border-radius: 6px;
+box-shadow: 0 5px 10px rgba(0,0,0,0.2);
 }
 .wrapper h2{
   position: relative;
@@ -178,4 +181,10 @@ form .text h3 a{
 }
 form .text h3 a:hover{
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 768px) {
+  .wrapper {
+    top: 20%;
+  }
 }
