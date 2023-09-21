@@ -1,5 +1,5 @@
 import React from "react"
-
+import Authentication from "./Authentication"
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
 
 
@@ -10,8 +10,7 @@ export default function Navbar() {
             <img src ="/images/logo.png" alt="windyroad"/>
             </Link>
         <ul>
-            <CustomLink to ="/login">Login</CustomLink>
-            <CustomLink to ="/registration">Sign Up</CustomLink>            
+            <Authentication/>  
         </ul>
         </nav>
     )
@@ -28,3 +27,8 @@ const isActive = useMatch({ path : resolvedPath.pathname, end: true})
         </li>
     )
 }
+
+/*<CustomLink to ="/login">Login</CustomLink>
+            <CustomLink to ="/registration">Sign Up</CustomLink>
+
+            */
