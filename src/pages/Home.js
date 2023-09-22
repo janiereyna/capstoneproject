@@ -14,7 +14,6 @@ export const Home = () => {
           <h2>Why Choose UNTRides?</h2>
           <ul>
             <li>Convenient and affordable</li>
-            <li>Safe and reliable</li>
             <li>Environmentally friendly</li>
           </ul>
         </section>
