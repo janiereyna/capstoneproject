@@ -34,16 +34,10 @@ export const Registration = () => {
   const navigate = useNavigate();
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // Declare errorMessage state
 
- //const isMounted = useRef(true); // Ref to track component mount status
 
-  /*useEffect(() => {
-    // Cleanup function to update isMounted on unmount
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-*/
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -58,6 +52,7 @@ export const Registration = () => {
 
   const signUp = (e) => {
     e.preventDefault();
+    setErrorMessage("");
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
         // Show the success modal
@@ -69,12 +64,37 @@ export const Registration = () => {
         }, 5000); // 2000 milliseconds (2 seconds) delay, adjust as needed
       })
       .catch((error) => {
-        console.log("Error during registration:", error);
+        // Determine the specific error code
+        const errorCode = error.code;
+        let errorMessage = "Registration failed. Please try again.";
+  
+        // Customize error message based on the error code
+        switch (errorCode) {
+          case "auth/email-already-in-use":
+            errorMessage = "Email is already in use. Please use a different email.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Invalid email address. Please enter a valid email.";
+            break;
+          case "auth/weak-password":
+            errorMessage = "Weak password. Please choose a stronger password.";
+            break;
+          // Add more cases for other error codes as needed
+          default:
+            // Use the default error message
+        }
+        setErrorMessage(errorMessage);
+
+        // Show the error modal with the specific error message
+        setIsErrorModalOpen(true);
       });
   };
   
   
-
+  const closeErrorModal = () => {
+    // Close the error modal
+    setIsErrorModalOpen(false);
+  };
 
   const closeSuccessModal = () => {
     // Close the success modal
@@ -120,6 +140,21 @@ export const Registration = () => {
       {isSuccessModalOpen && (
         <SuccessModal isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
       )}
+
+{isErrorModalOpen && (
+  <Modal
+    isOpen={isErrorModalOpen}
+    onRequestClose={closeErrorModal}
+    contentLabel="Error Modal"
+    ariaHideApp={false} // Prevents accessibility error
+  >
+    <div className="error-modal">
+      <h2>Error!</h2>
+      <p>{errorMessage}</p>
+      <button onClick={closeErrorModal}>Close</button>
+    </div>
+  </Modal>
+)}
       </div>
     </div>
   );
@@ -135,39 +170,3 @@ function CustomLink({to, children, ...props}){
             </li>
         )
     }
-
-
-    /*div class="input-box">
-            <input type="text" placeholder="First Name" required />
-          </div>
-          <div class="input-box">
-            <input type="text" placeholder="Last Name" required />
-          </div>
-          <div class="input-box"></div>
-
-
-        */
-
-          /*
-createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    navigate("/login")
-    // Signed in 
-    console.log(userCredential)
-    // ...
-  })
-  .catch((error) => {
-    console.log(error)
-  });
-} 
-
-          */
-
-/*<div className="input-box">
-          <label>Select Role:</label>
-          <select value={role} onChange={handleRoleChange} required>
-            <option value="rider">Rider</option>
-            <option value="driver">Driver</option>
-          </select>
-        </div>
-        */

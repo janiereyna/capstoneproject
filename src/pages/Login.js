@@ -5,6 +5,23 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 
+const ErrorModal = ({ isOpen, onClose, errorMessage }) => {
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      contentLabel="Error Modal"
+      ariaHideApp={false}
+    >
+      <div className="error-modal">
+        <h2>Error!</h2>
+        <p>{errorMessage}</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </Modal>
+  );
+};
+
 const SuccessModal = ({ isOpen, onClose }) => {
   return (
     <Modal
@@ -27,6 +44,9 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -48,8 +68,13 @@ export const Login = () => {
         }, 5000); // Adjust the timing as needed
       })
       .catch((error) => {
-        console.log("Error during login:", error);
+        setIsErrorModalOpen(true);
+        setErrorMessage("Error during login: " + error.message);
       });
+  };
+
+  const closeErrorModal = () => {
+    setIsErrorModalOpen(false);
   };
 
   const closeSuccessModal = () => {
@@ -90,6 +115,13 @@ export const Login = () => {
       </form>
       {isSuccessModalOpen && (
         <SuccessModal isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
+      )}
+      {isErrorModalOpen && (
+        <ErrorModal
+          isOpen={isErrorModalOpen}
+          onClose={closeErrorModal}
+          errorMessage={errorMessage}
+        />
       )}
     </div>
   );
