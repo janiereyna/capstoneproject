@@ -63,9 +63,9 @@ For many students, owning a car is an expense they can't afford, making it diffi
 ## Roadmap
 
 - [ ] **Register as a Driver:** Users can create a driver account by providing their personal information, vehicle information, and driver's license information.
-- [ ] **Register as a Passenger:** Users can create a passenger account by providing their personal information and contact details.
+- [X] **Register as a Passenger:** Users can create a passenger account by providing their personal information and contact details.
 - [ ] **Login as a Driver:** Registered drivers can log in to their account using their email/username and password.
-- [ ] **Login as a Passenger:** Registered passengers can log in to their account using their email/username and password.
+- [X] **Login as a Passenger:** Registered passengers can log in to their account using their email/username and password.
 - [ ] **Post a Ride Request:** Passengers can post a ride request by providing their pick-up and drop-off locations, date and time, and any additional notes.
 - [ ] **Accept/Validate Ride Request:** When a driver accepts a ride request, they will be taken to a validation page where they can confirm the pick-up and drop-off locations and the date and time of the ride. They can also chat with the passenger to confirm any additional details.
 - [ ] **Accepting an Available Ride:** Drivers can browse available rides in their area and accept them if they are available.
