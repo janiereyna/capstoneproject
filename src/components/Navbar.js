@@ -27,6 +27,23 @@ const isActive = useMatch({ path : resolvedPath.pathname, end: true})
         </li>
     )
 }
+  
+
+
+/*export default function Navbar() {
+    return (
+        <nav className="nav">
+            <Link to="/" className="site-logo">
+            <img src ="/images/logo.png" alt="windyroad"/>
+            </Link>
+        <ul>
+            <Authentication/>  
+        </ul>
+        </nav>
+    )
+}
+*/
+
 
 /*<CustomLink to ="/login">Login</CustomLink>
             <CustomLink to ="/registration">Sign Up</CustomLink>

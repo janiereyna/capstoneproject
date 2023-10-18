@@ -4,9 +4,10 @@ import "../styles.css";
 import Navbar from "../components/Navbar";
 import MyAccount from "./MyAccount";
 import { Link, Navigate, useMatch, useResolvedPath } from "react-router-dom";
-import { auth, app } from "../firebase";
+import { auth, app, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
 
 
 const SuccessModal = ({ isOpen, onClose }) => {
@@ -38,6 +39,7 @@ export const Registration = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Declare errorMessage state
 
 
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -54,7 +56,15 @@ export const Registration = () => {
     e.preventDefault();
     setErrorMessage("");
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
+    .then(async(userCredential) => {
+      const userId = userCredential.user.uid;
+      const userDocRef = doc(db, "users", userId);
+
+      await setDoc(userDocRef, {
+        email: email,
+        role: role,
+      });
+        
         // Show the success modal
         setIsSuccessModalOpen(true);
   
@@ -125,6 +135,16 @@ export const Registration = () => {
             value={password}
             onChange={handlePasswordChange}
           />
+        </div>
+
+        <div className="input-box">
+          <label>
+            Role:
+            <select value={role} onChange={handleRoleChange} required>
+              <option value="rider">Rider</option>
+              <option value="driver">Driver</option>
+            </select>
+          </label>
         </div>
         
         <div class="input-box button">
