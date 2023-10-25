@@ -9,8 +9,8 @@ import {Login} from"./pages/Login"
 import {MyAccount} from "./pages/MyAccount"
 import {RequestRide} from "./pages/RequestRide"
 import {RideHistory} from "./pages/RideHistory"
-
-import { Route, Routes} from "react-router-dom"
+import ForgotPassword from "./pages/ForgotPassword";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -19,11 +19,12 @@ function App() {
     <div className="container">
       <Routes>
         <Route path= "/" element={<Home />} />
-        <Route path= "/registration" element={<Registration />} />
-        <Route path= "/login" element={<Login />} />
-        <Route path= "/MyAccount" element={<MyAccount />} />
+        <Route path= "/Registration" element={<Registration />} />
+        <Route path= "/Login" element={<Login />} />
+        <Route path= "/Myaccount" element={<MyAccount />} />
         <Route path= "/RequestRide" element={<RequestRide />} />
         <Route path= "/RideHistory" element={<RideHistory />} />
+        <Route path= "/ForgotPassword" element={<ForgotPassword />} />
       </Routes>
     </div>
   </>

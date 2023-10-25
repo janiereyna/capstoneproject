@@ -112,6 +112,11 @@ export const Login = () => {
             Don't have an account? <Link to="/registration">Register here</Link>
           </h3>
         </div>
+        <div className="text">
+        <h3>
+        Forgot Password? <Link to ="/forgotpassword">Reset password</Link>
+       </h3>
+        </div>
       </form>
       {isSuccessModalOpen && (
         <SuccessModal isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
