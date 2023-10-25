@@ -29,6 +29,9 @@ const SuccessModal = ({ isOpen, onClose }) => {
 
 
 export const Registration = () => {
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("rider"); // Default role is "rider"
@@ -39,6 +42,20 @@ export const Registration = () => {
   const [errorMessage, setErrorMessage] = useState(""); // Declare errorMessage state
 
 
+  const handleFirstnameChange = (e) => {
+    setFirstname(e.target.value);
+  };
+
+  const handleLastnameChange = (e) => {
+    setLastname(e.target.value);
+  };
+
+  const handlePhonenumberChange = (e) => {
+    const inputPhoneNumber = e.target.value;
+  // Remove dashes from the input for internal storage if needed
+  const formattedPhoneNumber = inputPhoneNumber.replace(/-/g, "");
+  setPhonenumber(formattedPhoneNumber);
+  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -61,6 +78,9 @@ export const Registration = () => {
       const userDocRef = doc(db, "users", userId);
 
       await setDoc(userDocRef, {
+        firstname: firstname, // Add first name to the document data
+        lastname: lastname,   // Add last name to the document data
+        phonenumber: phonenumber,
         email: email,
         role: role,
       });
@@ -117,6 +137,37 @@ export const Registration = () => {
     <div class="wrapper">
       <h2>Registration</h2>
       <form onSubmit={signUp}>
+      <div class="input-box">
+    <input
+      type="text"
+      placeholder="First Name"
+      required
+      value={firstname}
+      onChange={handleFirstnameChange} // Call handleFirstnameChange on input change
+    />
+  </div>
+
+  <div class="input-box">
+    <input
+      type="text"
+      placeholder="Last Name"
+      required
+      value={lastname}
+      onChange={handleLastnameChange} // Call handleLastnameChange on input change
+    />
+  </div>
+
+  <div class="input-box">
+    <input
+      type="tel"
+      placeholder="Phone Number (e.g., xxx-xxx-xxxx)"
+      required
+      pattern="(\d{3}-\d{3}-\d{4}|\d{10})"
+      value={phonenumber}
+      onChange={handlePhonenumberChange} // Call handleLastnameChange on input change
+    />
+  </div>
+
         <div class="input-box">
           <input
             type="text"
