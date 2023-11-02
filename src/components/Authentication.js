@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import {useState} from "react"
-import { auth, app } from "../firebase"
+import { auth, app, db} from "../firebase"
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import "../Authentication.css";
