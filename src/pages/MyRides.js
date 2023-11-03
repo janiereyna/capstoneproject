@@ -6,36 +6,38 @@ export const MyRides = () => {
   .footer-section-child {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 629px;
     background-color: #333;
-    width: 1440px;
+    width: 1512px;
     height: 64px;
   }
   .unt-rides {
     position: absolute;
     top: 20px;
-    left: 659px;
+    left: 1290px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 151px;
     height: 24px;
+    color: white;
   }
   .background-image-icon,
   .footer-section {
     position: absolute;
     top: 1016px;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 1512px;
+    height: 64px;
   }
   .background-image-icon {
     background-image: url("/Images/backgroundImage.png");
     background-size: cover;
     background-position: center;
     position: absolute;
-    top: 0;
-    height: 1016px;
+    top: -100px;
+    left: 630px;
+    height: 1116px;
     object-fit: cover;
     opacity: 0.9;
   }
@@ -49,7 +51,7 @@ export const MyRides = () => {
     border: 1px solid #000;
     box-sizing: border-box;
     width: 1257px;
-    height: 70px;
+    height: 715.91px;
   }
   .mini-nav-border {
     position: absolute;
@@ -189,62 +191,7 @@ export const MyRides = () => {
     color: var(--color-black);
     background: grey;
   }
-  .rectangle-div,
-  .rectangles-child,
-  .rectangles-inner,
-  .rectangles-item {
-    position: absolute;
-    top: 0;
-    left: 1.9px;
-    background-color: var(--color-silver);
-    width: 1104.3px;
-    height: 63.6px;
-  }
-  .rectangle-div,
-  .rectangles-inner,
-  .rectangles-item {
-    top: 127.3px;
-  }
-  .rectangle-div,
-  .rectangles-inner {
-    top: 254.5px;
-  }
-  .rectangle-div {
-    top: 381.8px;
-    left: 0;
-  }
-  .rectangles-child1 {
-    position: absolute;
-    top: 63.6px;
-    width: 1106.1px;
-  }
-  .rectangles-child1,
-  .rectangles-child2,
-  .rectangles-child3 {
-    left: 0;
-    background-color: var(--color-gainsboro-300);
-    height: 63.6px;
-  }
-  .rectangles-child2 {
-    position: absolute;
-    top: 190.9px;
-    width: 1106.1px;
-  }
-  .rectangles-child3 {
-    top: 318.1px;
-  }
-  .rectangles,
-  .rectangles-child3,
-  .rectangles-child4 {
-    position: absolute;
-    width: 1106.1px;
-  }
-  .rectangles-child4 {
-    top: 445.4px;
-    left: 0;
-    background-color: var(--color-gainsboro-300);
-    height: 63.6px;
-  }
+  
   .rectangles {
     top: 147px;
     left: 1.9px;
@@ -292,6 +239,31 @@ export const MyRides = () => {
 .data-box:hover {
   background-color: #f0f0f0;
 }
+.mask-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  top: 100px;
+  left: -630px;
+  font-family: Inter;
+}
+.dashboard-create-ride-offer{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  text-align: center;
+  font-size: 16px;
+  color: #000; /* You can change the color according to your design */
+  font-family: Inter;
+  left: 50%;
+}
+
 
   `;
   
@@ -321,12 +293,12 @@ export const MyRides = () => {
   return (
     <div className="mask-group">
       <style>{css}</style>
+      <img className="background-image-icon" alt="" />
       <div className="dashboard-create-ride-offer">
         <div className="footer-section">
           <div className="footer-section-child"></div>
           <b className="unt-rides">© 2023 UNT Rides</b>
         </div>
-        <img className="background-image-icon" alt="" />
         <div className="dashboard-box">
           <div className="dashboard-border">
             <div className="dashboard-user-interaction"></div>
@@ -365,5 +337,6 @@ export const MyRides = () => {
     </div>
   );
   };
+  
 
 export default MyRides;
