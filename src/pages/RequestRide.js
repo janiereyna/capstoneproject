@@ -6,9 +6,9 @@ export const RequestRide = () => {
   .footer-section-child {
     position: absolute;
     top: 0;
-    left: 0;
+    left: -100px;
     background-color: #333;
-    width: 1440px;
+    width: 1612px;
     height: 64px;
   }
   .unt-rides {
@@ -26,7 +26,7 @@ export const RequestRide = () => {
     position: absolute;
     top: 1016px;
     left: 0;
-    width: 1440px;
+    width: 1512px;
     height: 64px;
   }
   .background-image-icon {
@@ -252,10 +252,9 @@ export const RequestRide = () => {
     background-color: transparent;
   }
   .dashboard-create-ride-offer {
-    position: absolute;
     top: 0;
-    left: 0;
-    background-color: #fff;
+    left: 40px;
+    background-color: transparent;
     width: 1440px;
     height: 1080px;
     overflow: hidden;
@@ -276,15 +275,15 @@ export const RequestRide = () => {
   return (
     <div className="mask-group">
       <style>{css}</style>
+      <img
+          className="background-image-icon"
+          alt=""
+        />
       <div className="dashboard-create-ride-offer">
         <div className="footer-section">
           <div className="footer-section-child" />
           <b className="unt-rides">© 2023 UNT Rides</b>
         </div>
-        <img
-          className="background-image-icon"
-          alt=""
-        />
         <div className="dashboard-box">
           <div className="dashboard-border">
             <div className="dashboard-user-interaction" />
