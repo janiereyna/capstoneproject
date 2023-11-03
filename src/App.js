@@ -6,11 +6,13 @@ import "./styles.css"
 import {Home} from"./pages/Home"
 import {Registration} from"./pages/Registration"
 import {Login} from"./pages/Login"
-import MyAccount from "./pages/MyAccount"
+import {MyAccount} from "./pages/MyAccount"
 import {RequestRide} from "./pages/RequestRide"
 import {RideHistory} from "./pages/RideHistory"
-import ForgotPassword from "./pages/ForgotPassword";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {AvailableRides} from "./pages/AvailableRides";
+import {MyRides} from "./pages/MyRides";
+import { Route, Routes} from "react-router-dom"
+
 
 function App() {
   return (
@@ -19,12 +21,13 @@ function App() {
     <div className="container">
       <Routes>
         <Route path= "/" element={<Home />} />
-        <Route path= "/Registration" element={<Registration />} />
-        <Route path= "/Login" element={<Login />} />
+        <Route path= "/registration" element={<Registration />} />
+        <Route path= "/login" element={<Login />} />
         <Route path= "/MyAccount" element={<MyAccount />} />
         <Route path= "/RequestRide" element={<RequestRide />} />
         <Route path= "/RideHistory" element={<RideHistory />} />
-        <Route path= "/ForgotPassword" element={<ForgotPassword />} />
+        <Route path= "/AvailableRides" element={<AvailableRides />} /> {/* Add route for AvailableRides */}
+        <Route path= "/MyRides" element={<MyRides />} /> {/* Add route for MyRides */}
       </Routes>
     </div>
   </>
