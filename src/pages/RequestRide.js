@@ -47,7 +47,7 @@ export const RequestRide = () => {
     autoFillAddress(originRef);
     autoFillAddress(destinationRef);
   }, [isLoaded]);
-*/
+
   const autoCompleteRef = useRef();
   const inputRef = useRef();
   const options = {
@@ -61,7 +61,7 @@ export const RequestRide = () => {
     options
    );
   }, []);
-
+*/
   const css = `
   .footer-section-child {
     position: relative;
@@ -80,6 +80,7 @@ export const RequestRide = () => {
     justify-content: center;
     width: 151px;
     height: 24px;
+    color: white;
   }
   .background-image-icon,
   .footer-section {
@@ -89,13 +90,22 @@ export const RequestRide = () => {
     width: 1512px;
     height: 64px;
   }
+  .dashboard-box {
+    position: absolute;
+    top: 149px;
+    left: 127px;
+    width: 1257px;
+    height: 717px;
+    text-align: left;
+    font-size: 18px;
+  }
   .background-image-icon {
     background-image: url("/Images/backgroundImage.png");
     background-size: cover;
     background-position: center;
     position: absolute;
-    top: 0;
-    height: 1016px;
+    top: 64px;
+    height: 113%;
     object-fit: cover;
     opacity: 0.9;
   }
@@ -291,19 +301,11 @@ export const RequestRide = () => {
     font-size: 16px;
     color: #9c9b9b;
   }
-  .dashboard-box {
-    position: absolute;
-    top: 149px;
-    left: 91px;
-    width: 1257px;
-    height: 717px;
-    text-align: left;
-    font-size: 18px;
-  }
+  
   .submit-ride-offer {
     position: absolute;
     top: 729px;
-    left: 636px;
+    left: 672px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -311,24 +313,7 @@ export const RequestRide = () => {
     height: 51px;
     background-color: transparent;
   }
-  .dashboard-create-ride-offer {
-    top: 0;
-    left: 40px;
-    background-color: transparent;
-    width: 1440px;
-    height: 1080px;
-    overflow: hidden;
-    position: absolute;
-  }
-  .mask-group {
-    position: absolute;
-    width: 100%;
-    height: 1080px;
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    font-family: Inter;
-  }
+  
   `;
     
 
@@ -375,13 +360,13 @@ export const RequestRide = () => {
               type="text"
               className="destination"
               placeholder="Destination"
-              ref={inputRef} /* Add a ref to the destination input */
+              /*ref={inputRef}  Add a ref to the destination input */
             />
             <input
               type="text"
               className="terminal"
               placeholder="Terminal"
-              ref={inputRef} /* Add a ref to the terminal input */
+              /*ref={inputRef} /* Add a ref to the terminal input */
             />
             <input type="text" className="name" placeholder="Name" />
           </div>
