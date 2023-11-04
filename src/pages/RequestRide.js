@@ -1,7 +1,67 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useRef, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useJsApiLoader } from '@react-google-maps/api';
+
+
 
 export const RequestRide = () => {
+ /*const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
+  });
+  
+  const [map, setMap] = useState(null);
+  const [directionsResponse, setDirectionsResponse] = useState(null);
+  const [distance, setDistance] = useState('');
+  const [duration, setDuration] = useState('');
+  const [route, setRoute] = useState(null);
+  const [originMarker, setOriginMarker] = useState(null);
+  const [destinationMarker, setDestinationMarker] = useState(null);
+  const originRef = useRef(null);
+  const destinationRef = useRef(null);
+  const autocompleteService = useRef(null);
+
+  useEffect(() => {
+    if (isLoaded) {
+      autocompleteService.current = new window.google.maps.places.AutocompleteService();
+    }
+  }, [isLoaded]);
+
+  const autoFillAddress = (ref) => {
+    if (!autocompleteService.current) return;
+
+    const input = ref.current;
+
+    if (input) {
+      const autocomplete = new window.google.maps.places.Autocomplete(input);
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (place && place.formatted_address) {
+          input.value = place.formatted_address;
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    autoFillAddress(originRef);
+    autoFillAddress(destinationRef);
+  }, [isLoaded]);
+*/
+  const autoCompleteRef = useRef();
+  const inputRef = useRef();
+  const options = {
+   componentRestrictions: { country: "ng" },
+   fields: ["address_components", "geometry", "icon", "name"],
+   types: ["establishment"]
+  };
+  useEffect(() => {
+   autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+    inputRef.current,
+    options
+   );
+  }, []);
+
   const css = `
   .footer-section-child {
     position: relative;
@@ -269,9 +329,8 @@ export const RequestRide = () => {
     color: #fff;
     font-family: Inter;
   }
-  
-    
   `;
+    
 
   return (
     <div className="mask-group">
@@ -312,8 +371,18 @@ export const RequestRide = () => {
             <div className="form-fields-create-ride-offe-child2" />
             <input type="text" className="available-seats" placeholder="Available Seats" />
             <input type="text" className="date" placeholder="MM/DD/YY" />
-            <input type="text" className="destination" placeholder="Destination" />
-            <input type="text" className="terminal" placeholder="Terminal" />
+            <input
+              type="text"
+              className="destination"
+              placeholder="Destination"
+              ref={inputRef} /* Add a ref to the destination input */
+            />
+            <input
+              type="text"
+              className="terminal"
+              placeholder="Terminal"
+              ref={inputRef} /* Add a ref to the terminal input */
+            />
             <input type="text" className="name" placeholder="Name" />
           </div>
         </div>
