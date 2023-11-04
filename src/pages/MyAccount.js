@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
-const MyAccount = () => {
+export const MyAccount = () => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
