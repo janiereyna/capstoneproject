@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 export const RequestRide = () => {
   const css = `
   .footer-section-child {
-    position: absolute;
+    position: relative;
     top: 0;
+    width: 1612px;
     left: -100px;
     background-color: #333;
-    width: 1612px;
     height: 64px;
   }
   .unt-rides {
@@ -258,9 +258,10 @@ export const RequestRide = () => {
     width: 1440px;
     height: 1080px;
     overflow: hidden;
+    position: absolute;
   }
   .mask-group {
-    position: relative;
+    position: absolute;
     width: 100%;
     height: 1080px;
     text-align: center;
