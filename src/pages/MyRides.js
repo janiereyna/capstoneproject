@@ -251,6 +251,15 @@ export const MyRides = () => {
   left: -630px;
   font-family: Inter;
 }
+.dashboard-box {
+  position: relative;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  font-family: Inter;
+  left: 0px;
+  top: 40px;
+}
 .dashboard-create-ride-offer{
   display: flex;
   justify-content: flex-start;
