@@ -6,7 +6,7 @@ export const MyRides = () => {
   .footer-section-child {
     position: absolute;
     top: 0;
-    left: 629px;
+    left: -126px;
     background-color: #333;
     width: 1512px;
     height: 64px;
@@ -14,7 +14,7 @@ export const MyRides = () => {
   .unt-rides {
     position: absolute;
     top: 20px;
-    left: 1290px;
+    left: 539px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,7 +36,7 @@ export const MyRides = () => {
     background-position: center;
     position: absolute;
     top: -100px;
-    left: 630px;
+    left: -126px;
     height: 1116px;
     object-fit: cover;
     opacity: 0.9;
