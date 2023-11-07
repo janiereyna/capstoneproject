@@ -371,7 +371,7 @@ export const RequestRide = () => {
             <input type="text" className="name" placeholder="Name" />
           </div>
         </div>
-        <button className="submit-ride-offer">Submit Ride Offer</button>
+        <button className="submit-ride-offer"> <Link to="/map">Submit Ride Offer</Link></button>
       </div>
     </div>
   );

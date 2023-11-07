@@ -21,14 +21,32 @@ const ErrorModal = ({ isOpen, onClose, errorMessage }) => {
     </Modal>
   );
 };
-
 const SuccessModal = ({ isOpen, onClose }) => {
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Success Modal"
-      ariaHideApp={false} // Prevents accessibility error
+      ariaHideApp={false}
+      style={{
+        overlay: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        content: {
+          width: 'auto',
+          maxWidth: '40%', // You can adjust the maximum width as needed
+          maxHeight: '30%',
+          padding: '20px',
+          textAlign: 'center',
+        },
+      }}
     >
       <div className="success-modal">
         <h2>Success!</h2>

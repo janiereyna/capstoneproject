@@ -3,7 +3,7 @@ import { useJsApiLoader, GoogleMap, Marker, Polyline } from '@react-google-maps/
 
 const center = { lat: 33.2148, lng: -97.1331 };
 
-export const RequestRide = () => {
+export const Map = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
@@ -228,4 +228,4 @@ export const RequestRide = () => {
   );
 };
 
-export default RequestRide;
+export default Map;
