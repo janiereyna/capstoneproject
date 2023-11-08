@@ -1,68 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useJsApiLoader } from '@react-google-maps/api';
+import { collection, addDoc, doc, getDoc } from "firebase/firestore";
+import { db, auth } from "../firebase"; // Import Firebase authentication and database
 
 
 
 export const RequestRide = () => {
- /*const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: ['places'],
-  });
-  
-  const [map, setMap] = useState(null);
-  const [directionsResponse, setDirectionsResponse] = useState(null);
-  const [distance, setDistance] = useState('');
-  const [duration, setDuration] = useState('');
-  const [route, setRoute] = useState(null);
-  const [originMarker, setOriginMarker] = useState(null);
-  const [destinationMarker, setDestinationMarker] = useState(null);
-  const originRef = useRef(null);
-  const destinationRef = useRef(null);
-  const autocompleteService = useRef(null);
-
-  useEffect(() => {
-    if (isLoaded) {
-      autocompleteService.current = new window.google.maps.places.AutocompleteService();
-    }
-  }, [isLoaded]);
-
-  const autoFillAddress = (ref) => {
-    if (!autocompleteService.current) return;
-
-    const input = ref.current;
-
-    if (input) {
-      const autocomplete = new window.google.maps.places.Autocomplete(input);
-      autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace();
-        if (place && place.formatted_address) {
-          input.value = place.formatted_address;
-        }
-      });
-    }
-  };
-
-  useEffect(() => {
-    autoFillAddress(originRef);
-    autoFillAddress(destinationRef);
-  }, [isLoaded]);
-
-  const autoCompleteRef = useRef();
-  const inputRef = useRef();
-  const options = {
-   componentRestrictions: { country: "ng" },
-   fields: ["address_components", "geometry", "icon", "name"],
-   types: ["establishment"]
-  };
-  useEffect(() => {
-   autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-    inputRef.current,
-    options
-   );
-  }, []);
-*/
-  const css = `
+const css = `
   .footer-section-child {
     position: relative;
     top: 0;
@@ -119,7 +64,7 @@ export const RequestRide = () => {
     border: 1px solid #000;
     box-sizing: border-box;
     width: 1257px;
-    height: 715.91px;
+    height: 780.91px;
   }
   .mini-nav-border {
     position: absolute;
@@ -240,7 +185,7 @@ export const RequestRide = () => {
     left: 1.08px;
   }
   .form-fields-create-ride-offe-child2 {
-    top: 430.52px;
+    top: 530px;
     left: 170.28px;
     border-radius: 10px;
     background-color: #00853e;
@@ -292,30 +237,142 @@ export const RequestRide = () => {
     width: 522.77px;
     height: 54.64px;
   }
+  
+  /* Styles for the request type dropdown */
+
+
+  .request-type {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    top: 0px;
+  }
+  
+  .dropdown-container {
+    position: relative;
+    display: inline-block;
+    top: 432px;
+    left: 0px;
+  }
+  
+  .dropdown-content {
+    width: 528px;
+    height: 55px;
+    padding: 5px;
+    border: 1px solid #000; /* Black border */
+    border-radius: 0px;
+    background-color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: space-between; /* Center horizontally and create space around content */
+    text-align: center; /* Center text */
+  }
+  
+  /* Styles for the dropdown arrow */
+  .dropdown-container::after {
+    content: "\f120"; /* Unicode for down arrow icon */
+    font-family: FontAwesome;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  
+  
+
   .form-fields-create-ride-offe {
     position: absolute;
     top: 147px;
     left: 365px;
     width: 527px;
-    height: 488px;
+    height: 550px;
     font-size: 16px;
     color: #9c9b9b;
   }
   
   .submit-ride-offer {
+    z-index: 1;
     position: absolute;
-    top: 729px;
-    left: 672px;
+    top: 532px;
+    left: 173px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 165px;
-    height: 51px;
+    width: 181px;
+    height: 55px;
     background-color: transparent;
+  }
+  .input-field {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input-field:hover,
+  .input-field:focus {
+    border-color: #007bff;
   }
   
   `;
+  const [rideRequestData, setRideRequestData] = useState({
+    availableSeats: "",
+    date: "",
+    destination: "",
+    terminal: "",
+    name: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Get the current user
+    const user = auth.currentUser;
+
+    // Check if the user is authenticated
+    if (user) {
+      // Get the user's UID
+      const uid = user.uid;
+
+      // Create a reference to the user's document in Firestore
+      const userDocRef = doc(db, "users", uid);
+
+      // Save the ride request data to the user's document
+      try {
+        const docSnap = await getDoc(userDocRef);
+        if (docSnap.exists()) {
+          // If the user document exists, add the ride request data to the subcollection
+          const rideRequestsRef = collection(userDocRef, "rideRequests");
+          await addDoc(rideRequestsRef, rideRequestData);
+          console.log("Ride request saved successfully!");
+        } else {
+          console.error("User document does not exist.");
+        }
+      } catch (error) {
+        console.error("Error adding ride request: ", error);
+      }
+    } else {
+      // User is not authenticated, handle accordingly (e.g., redirect to login page)
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRideRequestData({ ...rideRequestData, [name]: value });
+  };
+
     
+  const [requestType, setRequestType] = useState(''); // State to manage the selected request type
+
+  const handleRequestTypeChange = (event) => {
+    setRequestType(event.target.value);
+  };
+  
 
   return (
     <div className="mask-group">
@@ -354,24 +411,63 @@ export const RequestRide = () => {
             <div className="rectangle-div" />
             <div className="form-fields-create-ride-offe-child1" />
             <div className="form-fields-create-ride-offe-child2" />
-            <input type="text" className="available-seats" placeholder="Available Seats" />
-            <input type="text" className="date" placeholder="MM/DD/YY" />
-            <input
+        <form onSubmit={handleSubmit}>  
+        <div className="form-fields">
+          <input
+            type="text"
+            className="available-seats"
+            name="availableSeats"
+            value={rideRequestData.availableSeats}
+            onChange={handleInputChange}
+            placeholder="Available Seats"
+          />
+          <input
+            type="text"
+            className="date"
+            name="date"
+            value={rideRequestData.date}
+            onChange={handleInputChange}
+            placeholder="MM/DD/YY"
+          />
+          <input
               type="text"
               className="destination"
+              name="destination"
               placeholder="Destination"
+              value={rideRequestData.destination}
+              onChange={handleInputChange}
               /*ref={inputRef}  Add a ref to the destination input */
-            />
-            <input
+          />
+          <input
               type="text"
               className="terminal"
+              name="terminal"
               placeholder="Terminal"
+              value={rideRequestData.terminal}
+              onChange={handleInputChange}
               /*ref={inputRef} /* Add a ref to the terminal input */
-            />
-            <input type="text" className="name" placeholder="Name" />
+          />
+          <input
+            type="text"
+            className="name"
+            name="name"
+            placeholder="Name"
+            value={rideRequestData.name}
+            onChange={handleInputChange}
+          />
+          <li className="request-type">
+          <div className="dropdown-container">
+              <select className="dropdown-content" onChange={handleRequestTypeChange}>
+                  <option value="driver">Post as a Driver</option>
+                  <option value="passenger">Post as a Passenger</option>
+              </select>
           </div>
+          </li>
+          <button className="submit-ride-offer" type="submit"> <Link to="/map">Submit Ride Offer</Link></button>
+          </div>
+        </form>
         </div>
-        <button className="submit-ride-offer"> <Link to="/map">Submit Ride Offer</Link></button>
+        </div>
       </div>
     </div>
   );
