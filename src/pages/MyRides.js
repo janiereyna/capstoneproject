@@ -1,7 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { collection, query, getDocs } from "firebase/firestore";
+import { db, auth } from "../firebase"; // Import your Firebase configuration
 
 export const MyRides = () => {
+  const [rideRequests, setRideRequests] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const uid = user.uid;
+        const rideRequestsRef = collection(db, "users", uid, "rideRequests");
+        const rideRequestsQuery = query(rideRequestsRef);
+        const snapshot = await getDocs(rideRequestsQuery);
+        const requestsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setRideRequests(requestsData);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const css = `
   .footer-section-child {
     position: absolute;
@@ -230,14 +254,16 @@ export const MyRides = () => {
 
 .data-box {
   width: 100%;
-  height: 50px; /* Set your desired height for the rectangle boxes */
+  height: 50px;
   border: 1px solid #000;
-  margin-bottom: 10px; /* Set the margin between rectangle boxes */
+  margin-bottom: 10px;
+  background-color: #333; /* Background color for better contrast */
+  color: white; /* Text color */
 }
 
 /* Optional: Add hover effect to the rectangles */
 .data-box:hover {
-  background-color: #f0f0f0;
+  background-color: #555; /* Darker background color on hover */
 }
 .mask-group {
   display: flex;
@@ -277,18 +303,21 @@ export const MyRides = () => {
     return color;
   };
 
-  const createRectangles = (count) => {
-    const rectangles = [];
-    for (let i = 0; i < count; i++) {
-      const color = i % 2 === 0 ? "#ccc" : "#ddd"; // Alternating shades of grey
-      rectangles.push(
-        <div className="data-box" style={{ backgroundColor: color }}>
-          {/* Your rectangle content goes here */}
+  const createRectangles = () => {
+    return rideRequests.map((request) => {
+      return (
+        <div className="data-box" key={request.id}>
+          <div className="terminal">{request.terminal}</div>
+          <div className="destination">{request.destination}</div>
+          <div className="departure">{request.date}</div>
+          <div className="seats">{request.availableSeats}</div>
+          <div className="time">{request.time}</div>
+          {/* Add other properties as needed */}
         </div>
       );
-    }
-    return rectangles;
+    });
   };
+  
 
 
   return (
@@ -328,8 +357,8 @@ export const MyRides = () => {
             <div className="myrides-box">
               <div className="scroll-frame">
                 <div className="data-container" id="data-container">
-                  {createRectangles(50)} {/* Adjust the count as needed */}
-                </div>
+  {createRectangles()}
+</div>
               </div>
             </div>
           </div>

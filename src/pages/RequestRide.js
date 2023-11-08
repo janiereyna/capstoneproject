@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useJsApiLoader } from '@react-google-maps/api';
-import { collection, addDoc, doc, getDoc } from "firebase/firestore";
+import { collection, query, onSnapshot, addDoc, doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
 
 
@@ -328,27 +328,51 @@ const css = `
     name: "",
   });
 
+  useEffect(() => {
+    const rideRequestsRef = collection(db, 'users', auth.currentUser.uid, 'rideRequests');
+    const q = query(rideRequestsRef);
+  
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const requestsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setRideRequestData(requestsData);
+    });
+  
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Get the current user
     const user = auth.currentUser;
-
+  
     // Check if the user is authenticated
     if (user) {
       // Get the user's UID
       const uid = user.uid;
-
+  
       // Create a reference to the user's document in Firestore
       const userDocRef = doc(db, "users", uid);
-
+  
       // Save the ride request data to the user's document
       try {
         const docSnap = await getDoc(userDocRef);
         if (docSnap.exists()) {
           // If the user document exists, add the ride request data to the subcollection
           const rideRequestsRef = collection(userDocRef, "rideRequests");
-          await addDoc(rideRequestsRef, rideRequestData);
+          await addDoc(rideRequestsRef, {
+            availableSeats: rideRequestData.availableSeats,
+            date: rideRequestData.date,
+            destination: rideRequestData.destination,
+            terminal: rideRequestData.terminal,
+            name: rideRequestData.name,
+            requestType: requestType, // Add the request type here
+          });
           console.log("Ride request saved successfully!");
         } else {
           console.error("User document does not exist.");
@@ -367,11 +391,11 @@ const css = `
   };
 
     
-  const [requestType, setRequestType] = useState(''); // State to manage the selected request type
+  const [requestType, setRequestType] = useState('');
 
-  const handleRequestTypeChange = (event) => {
-    setRequestType(event.target.value);
-  };
+const handleRequestTypeChange = (event) => {
+  setRequestType(event.target.value);
+};
   
 
   return (
@@ -463,7 +487,7 @@ const css = `
               </select>
           </div>
           </li>
-          <button className="submit-ride-offer" type="submit"> <Link to="/map">Submit Ride Offer</Link></button>
+          <button className="submit-ride-offer" type="submit"> Submit Ride Offer</button>
           </div>
         </form>
         </div>
