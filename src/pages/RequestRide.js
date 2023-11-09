@@ -328,8 +328,22 @@ const css = `
     name: "",
   });
 
+  const [requestType, setRequestType] = useState('');
+  const [message, setMessage] = useState('');
+
   useEffect(() => {
-    const rideRequestsRef = collection(db, 'users', auth.currentUser.uid, 'rideRequests');
+    // Check if the user is authenticated
+    const user = auth.currentUser;
+  
+    if (!user) {
+      // User is not authenticated, handle accordingly (e.g., redirect to login page)
+      return; // Return early to prevent further execution
+    }
+  
+    // Get the UID of the authenticated user
+    const uid = user.uid;
+  
+    const rideRequestsRef = collection(db, 'users', uid, 'rideRequests');
     const q = query(rideRequestsRef);
   
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -344,59 +358,86 @@ const css = `
       unsubscribe();
     };
   }, []);
+  
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    // Get the current user
-    const user = auth.currentUser;
-  
-    // Check if the user is authenticated
-    if (user) {
-      // Get the user's UID
-      const uid = user.uid;
-  
-      // Create a reference to the user's document in Firestore
-      const userDocRef = doc(db, "users", uid);
-  
-      // Save the ride request data to the user's document
-      try {
-        const docSnap = await getDoc(userDocRef);
-        if (docSnap.exists()) {
-          // If the user document exists, add the ride request data to the subcollection
-          const rideRequestsRef = collection(userDocRef, "rideRequests");
-          await addDoc(rideRequestsRef, {
-            availableSeats: rideRequestData.availableSeats,
-            date: rideRequestData.date,
-            destination: rideRequestData.destination,
-            terminal: rideRequestData.terminal,
-            name: rideRequestData.name,
-            requestType: requestType, // Add the request type here
-          });
-          console.log("Ride request saved successfully!");
-        } else {
-          console.error("User document does not exist.");
-        }
-      } catch (error) {
-        console.error("Error adding ride request: ", error);
-      }
+  e.preventDefault();
+
+  // Check if the user is authenticated
+  const user = auth.currentUser;
+
+  if (!user) {
+    // User is not authenticated, handle accordingly (e.g., redirect to login page)
+    setMessage("User is not authenticated. Please log in."); // Set the error message
+    return; // Return early to prevent further execution
+  }
+
+  // Get the UID of the authenticated user
+  const uid = user.uid;
+
+  // Create a reference to the user's document in Firestore
+  const userDocRef = doc(db, "users", uid);
+
+  // Save the ride request data to the user's document
+  try {
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      // If the user document exists, add the ride request data to the subcollection
+      const rideRequestsRef = collection(userDocRef, "rideRequests");
+
+      await addDoc(rideRequestsRef, {
+        availableSeats: rideRequestData.availableSeats,
+        date: rideRequestData.date,
+        destination: rideRequestData.destination,
+        terminal: rideRequestData.terminal,
+        name: rideRequestData.name,
+        requestType: requestType, // Add the request type here
+      });
+
+      console.log("Ride request saved successfully!");
+
+      // Alert the user that the ride has been created
+      alert("Ride has been created successfully!");
+
+      // Reset the ride request form or perform any other desired actions
+      setRideRequestData({
+        availableSeats: "",
+        date: "",
+        destination: "",
+        terminal: "",
+        name: "",
+      });
     } else {
-      // User is not authenticated, handle accordingly (e.g., redirect to login page)
+      console.error("User document does not exist.");
+      setMessage("Error creating ride. Please try again."); // Set the error message
     }
-  };
+  } catch (error) {
+    console.error("Error adding ride request: ", error);
+    setMessage("An error occurred while creating the ride. Please try again later."); // Set the error message
+  }
+};
+
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setRideRequestData({ ...rideRequestData, [name]: value });
   };
 
-    
-  const [requestType, setRequestType] = useState('');
+  
 
 const handleRequestTypeChange = (event) => {
   setRequestType(event.target.value);
 };
   
+const handleBothChanges = (selectedOption) => {
+  // First, call handleRequestTypeChange
+  handleRequestTypeChange(selectedOption);
+
+  // Then, call handleInputChange with the selected value
+  handleInputChange()
+};
 
   return (
     <div className="mask-group">
@@ -439,11 +480,33 @@ const handleRequestTypeChange = (event) => {
         <div className="form-fields">
           <input
             type="text"
-            className="available-seats"
-            name="availableSeats"
-            value={rideRequestData.availableSeats}
+            className="name"
+            name="name"
+            placeholder="Name"
+            value={rideRequestData.name}
             onChange={handleInputChange}
-            placeholder="Available Seats"
+            required // Make the field compulsory
+            pattern="[A-Za-z\s]+" // Allow alphabets and spaces
+          />
+          <input
+            type="text"
+            className="terminal"
+            name="terminal"
+            placeholder="Terminal"
+            value={rideRequestData.terminal}
+            onChange={handleInputChange}
+            required // Make the field compulsory
+            pattern="[A-Za-z0-9\s\W]+" // Allow letters, numbers, spaces, and symbols
+          />
+          <input
+            type="text"
+            className="destination"
+            name="destination"
+            placeholder="Destination"
+            value={rideRequestData.destination}
+            onChange={handleInputChange}
+            required // Make the field compulsory
+            pattern="[A-Za-z0-9\s\W]+" // Allow letters, numbers, spaces, and symbols
           />
           <input
             type="text"
@@ -452,42 +515,36 @@ const handleRequestTypeChange = (event) => {
             value={rideRequestData.date}
             onChange={handleInputChange}
             placeholder="MM/DD/YY"
+            required // Make the field compulsory
+            pattern="\d{2}/\d{2}/\d{2}" // Match the format (MM/DD/YY)
+            maxLength="8" // Limit to 8 characters (MM/DD/YY)
           />
           <input
-              type="text"
-              className="destination"
-              name="destination"
-              placeholder="Destination"
-              value={rideRequestData.destination}
-              onChange={handleInputChange}
-              /*ref={inputRef}  Add a ref to the destination input */
-          />
-          <input
-              type="text"
-              className="terminal"
-              name="terminal"
-              placeholder="Terminal"
-              value={rideRequestData.terminal}
-              onChange={handleInputChange}
-              /*ref={inputRef} /* Add a ref to the terminal input */
-          />
-          <input
-            type="text"
-            className="name"
-            name="name"
-            placeholder="Name"
-            value={rideRequestData.name}
+            type="number" // Use type="number" to enforce numbers
+            className="available-seats"
+            name="availableSeats"
+            value={rideRequestData.availableSeats}
             onChange={handleInputChange}
+            placeholder="Available Seats"
+            required // Make the field compulsory
+            min="0" // Set a minimum value (0)
+            max="7" // Set a maximum value (7)
           />
           <li className="request-type">
           <div className="dropdown-container">
-              <select className="dropdown-content" onChange={handleRequestTypeChange}>
+              <select className="dropdown-content" onChange={handleBothChanges}>
                   <option value="driver">Post as a Driver</option>
                   <option value="passenger">Post as a Passenger</option>
               </select>
           </div>
           </li>
-          <button className="submit-ride-offer" type="submit"> Submit Ride Offer</button>
+          <button className="submit-ride-offer" type="submit"> Submit Ride Offer </button>
+          {/* Display the message */}
+          {message && (
+                <div className="message">
+                  {message}
+                </div>
+              )}
           </div>
         </form>
         </div>
