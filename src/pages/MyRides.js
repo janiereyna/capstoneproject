@@ -5,26 +5,6 @@ import { collection, query, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import your Firebase configuration
 
 export const MyRides = () => {
-  const [rideRequests, setRideRequests] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const uid = user.uid;
-        const rideRequestsRef = collection(db, "users", uid, "rideRequests");
-        const rideRequestsQuery = query(rideRequestsRef);
-        const snapshot = await getDocs(rideRequestsQuery);
-        const requestsData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setRideRequests(requestsData);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const css = `
   .footer-section-child {
@@ -259,7 +239,35 @@ export const MyRides = () => {
   margin-bottom: 10px;
   background-color: #333; /* Background color for better contrast */
   color: white; /* Text color */
+  position: relative;
 }
+
+.data-set {
+  display: flex;
+  flex-direction: row; /* Arrange data items horizontally */
+  flex-wrap: nowrap; /* Prevent wrapping to the next line */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* Expand to fill the available width */
+}
+
+.data-item {
+  flex: 1; /* Distribute available space equally among data items */
+  margin: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.value {
+  margin-top: 5px;
+}
+
 
 /* Optional: Add hover effect to the rectangles */
 .data-box:hover {
@@ -294,6 +302,56 @@ export const MyRides = () => {
 
   `;
   
+  const [rideRequests, setRideRequests] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const uid = user.uid;
+        const rideRequestsRef = collection(db, 'users', uid, 'rideRequests');
+        const rideRequestsQuery = query(rideRequestsRef);
+        const snapshot = await getDocs(rideRequestsQuery);
+        const requestsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setRideRequests(requestsData);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const createRectangles = () => {
+    return rideRequests.map((request) => {
+      return (
+        <div className="data-box" key={request.id}>
+          <div className="data-set">
+            <div className="data-item">
+              <div className="value">{request.terminal}</div>
+            </div>
+            <div className="data-item">
+              <div className="value">{request.destination}</div>
+            </div>
+            <div className="data-item">
+              <div className="value">{request.date}</div>
+            </div>
+            <div className="data-item">
+              <div className="value">{request.availableSeats}</div>
+            </div>
+            <div className="data-item">
+              <div className="value">{request.time}</div>
+            </div>
+          </div>
+          {/* Add other properties as needed */}
+        </div>
+      );
+    });
+  };
+  
+  
+
   const generateRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -303,20 +361,7 @@ export const MyRides = () => {
     return color;
   };
 
-  const createRectangles = () => {
-    return rideRequests.map((request) => {
-      return (
-        <div className="data-box" key={request.id}>
-          <div className="terminal">{request.terminal}</div>
-          <div className="destination">{request.destination}</div>
-          <div className="departure">{request.date}</div>
-          <div className="seats">{request.availableSeats}</div>
-          <div className="time">{request.time}</div>
-          {/* Add other properties as needed */}
-        </div>
-      );
-    });
-  };
+  
   
 
 
@@ -357,8 +402,8 @@ export const MyRides = () => {
             <div className="myrides-box">
               <div className="scroll-frame">
                 <div className="data-container" id="data-container">
-  {createRectangles()}
-</div>
+                  {createRectangles()}
+                </div>
               </div>
             </div>
           </div>
