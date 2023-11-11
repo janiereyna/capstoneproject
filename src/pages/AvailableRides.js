@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { collection, query, onSnapshot, addDoc, doc, getDocs} from "firebase/firestore";
+import { db, auth } from "../firebase"; // Import Firebase authentication and database
 
 
 export const AvailableRides = () => {
@@ -271,31 +273,98 @@ export const AvailableRides = () => {
   .rectangles-inner {
     position: absolute;
     top: 120px;
-    left
+  }
+
+  .data-box {
+  width: 100%;
+  height: 50px;
+  border: 1px solid #000;
+  margin-bottom: 10px;
+  background-color: #333; /* Background color for better contrast */
+  color: white; /* Text color */
+  position: relative;
+}
+
+.data-set {
+  display: flex;
+  flex-direction: row; /* Arrange data items horizontally */
+  flex-wrap: nowrap; /* Prevent wrapping to the next line */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* Expand to fill the available width */
+}
+
+.data-item {
+  flex: 1; /* Distribute available space equally among data items */
+  margin: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.value {
+  margin-top: 5px;
+}
   
 `;
 
-const generateRandomColor = () => {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+const [rideRequests, setRideRequests] = useState([]);
 
-const createRectangles = (count) => {
-  const rectangles = [];
-  for (let i = 0; i < count; i++) {
-    const color = i % 2 === 0 ? "#ccc" : "#ddd"; // Alternating shades of grey
-    rectangles.push(
-      <div className="data-box" style={{ backgroundColor: color }}>
-        {/* Your rectangle content goes here */}
-      </div>
-    );
-  }
-  return rectangles;
-};
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const uid = user.uid;
+        const rideRequestsRef = collection(db, 'users', uid, 'rideRequests');
+        const rideRequestsQuery = query(rideRequestsRef);
+        const snapshot = await getDocs(rideRequestsQuery);
+        const requestsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setRideRequests(requestsData);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const createRectangles = () => {
+    return rideRequests.map((request) => {
+      return (
+        <div className="data-box" key={request.id}>
+          <div className="data-set">
+            <div className="data-item">
+              <div className="value">{request.terminal}</div>
+            </div>
+            <div className="data-item">
+              <div className="value">{request.destination}</div>
+            </div>
+            <div className="data-item">
+              <div className="value">{request.date}</div>
+            </div>
+            <div className="data-item">
+              <div className="value">{request.availableSeats}</div>
+            </div>
+            <div className="data-item">
+              <div className="value">{request.time}</div>
+            </div>
+          </div>
+          {/* Add other properties as needed */}
+        </div>
+      );
+    });
+  };
+
+ const acceptRide = (offerId) => {
+    // Implement your ride acceptance logic here, using the offerId
+    console.log(`Accepting Ride: ${offerId}`);
+  };
 
 return (
   <div className="mask-group">
@@ -339,32 +408,6 @@ return (
           </div>
         </div>
       </div>
-      {/* <div className="rectangles">
-        <div className="rectangles-child" />
-        <div className="rectangles-item" />
-        <div className="accept-ride">Accept Ride</div>
-        <div className="rectangles-inner" />
-        <div className="rectangle-div" />
-        <div className="accept-ride1">Accept Ride</div>
-        <div className="rectangles-child1" />
-        <div className="rectangles-child2" />
-        <div className="accept-ride2">Accept Ride</div>
-        <div className="rectangles-child3" />
-        <div className="rectangles-child4" />
-        <div className="accept-ride3">Accept Ride</div>
-        <div className="rectangles-child5" />
-        <div className="rectangles-child6" />
-        <div className="accept-ride4">Accept Ride</div>
-        <div className="rectangles-child7" />
-        <div className="rectangles-child8" />
-        <div className="accept-ride5">Accept Ride</div>
-        <div className="rectangles-child9" />
-        <div className="rectangles-child10" />
-        <div className="accept-ride6">Accept Ride</div>
-        <div className="rectangles-child11" />
-        <div className="rectangles-child12" />
-        <div className="accept-ride7">Accept Ride</div>
-      </div> */}
     </div>
   </div>
 </div>
