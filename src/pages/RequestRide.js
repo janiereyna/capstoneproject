@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
+
 import { collection, query, onSnapshot, addDoc, doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
 
