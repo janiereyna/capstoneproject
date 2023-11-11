@@ -397,7 +397,7 @@ export const MyRides = () => {
               <b className="seats">Seats</b>
               <b className="departure">Departure</b>
               <b className="destination">Destination</b>
-              <b className="terminal">Terminal</b>
+              <b className="terminal">Origin</b>
             </div>
             <div className="myrides-box">
               <div className="scroll-frame">

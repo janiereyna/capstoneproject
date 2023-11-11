@@ -492,7 +492,7 @@ const handleBothChanges = (selectedOption) => {
             type="text"
             className="terminal"
             name="terminal"
-            placeholder="Terminal"
+            placeholder="Origin"
             value={rideRequestData.terminal}
             onChange={handleInputChange}
             required // Make the field compulsory

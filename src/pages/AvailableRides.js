@@ -329,7 +329,7 @@ return (
         <b className="available-seats">Available Seats</b>
         <b className="departure-time">Departure Time</b>
         <b className="destination">Destination</b>
-        <b className="terminal">Terminal</b>
+        <b className="terminal">Origin</b>
         <b className="name">Name</b>
       </div>
       <div className="myrides-box">
