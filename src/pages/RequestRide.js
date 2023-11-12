@@ -19,7 +19,7 @@ const css = `
   .unt-rides {
     position: absolute;
     top: 20px;
-    left: 659px;
+    left: 539px;
     display: flex;
     align-items: center;
     justify-content: center;
