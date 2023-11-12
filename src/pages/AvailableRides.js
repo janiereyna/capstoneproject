@@ -355,14 +355,17 @@ const [rideRequests, setRideRequests] = useState([]);
               <div className="value">{request.time}</div>
             </div>
           </div>
-          {/* Add other properties as needed */}
+          <div className="data-item">
+            <button className="accept-ride" onClick={() => acceptRide(request.id)}>
+              Accept Ride
+            </button>
+          </div>
         </div>
       );
     });
   };
 
  const acceptRide = (offerId) => {
-    // Implement your ride acceptance logic here, using the offerId
     console.log(`Accepting Ride: ${offerId}`);
   };
 
