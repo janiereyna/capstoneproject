@@ -11,6 +11,7 @@ import { RideHistory } from "./pages/RideHistory"
 import { AvailableRides } from "./pages/AvailableRides";
 import { MyRides } from "./pages/MyRides";
 import { Map } from "./pages/Map"; // Import the Map component
+import { ViewMap } from "./pages/ViewMap"; // Import the Map component
 import { Route, Routes } from "react-router-dom"
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/AvailableRides" element={<AvailableRides />} />
           <Route path="/MyRides" element={<MyRides />} />
           <Route path="/map" element={<Map />} /> {/* Add route for Map */}
+          <Route path="/Viewmap" element={<ViewMap />} /> {/* Add route for Map */}
         </Routes>
       </div>
     </>

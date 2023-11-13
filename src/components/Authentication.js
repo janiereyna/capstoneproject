@@ -47,6 +47,7 @@ const Authentication = () => {
                   <CustomLink to="/RequestRide">Create Ride Offer</CustomLink>
                   <CustomLink to="/AvailableRides">Available Rides</CustomLink>
                   <CustomLink to="/MyRides">My Rides</CustomLink>
+                  <CustomLink to="/ViewMap">View Map</CustomLink>
                 </ul>
               </li>
                 <CustomLink to ="/myaccount">My Account</CustomLink>  

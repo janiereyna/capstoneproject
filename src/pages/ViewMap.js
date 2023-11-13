@@ -5,7 +5,7 @@ import { db, auth } from "../firebase"; // Import your Firebase configuration
 
 const center = { lat: 33.2148, lng: -97.1331 };
 
-export const Map = () => {
+export const ViewMap = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
@@ -247,4 +247,4 @@ export const Map = () => {
   );
 };
 
-export default Map;
+export default ViewMap;
