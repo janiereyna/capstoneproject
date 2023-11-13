@@ -67,19 +67,26 @@ npm install npm@latest -g
 
 ### Installation
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-2. Install NPM packages
+1. Install NPM packages
    ```sh
    npm install
    ```
-3. Install @react-google-maps/api
+2. Install @react-google-maps/api
    ```sh
    npm i -S @react-google-maps/api
    ```
-
+3. Start react web application
+   ```sh
+   npm start
+   ```
+4. If you recieve errors regarding the google map api please 
+   ```sh
+   -add a file to the same directory where package-lock.json file is
+   -title the file it: ".env.local"
+   -copy and paste this API key to the created file:
+     REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30
+   -repeat steps 1 through 3
+   ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
